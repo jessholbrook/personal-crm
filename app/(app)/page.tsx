@@ -9,6 +9,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { NaturalLanguageSearch } from "@/components/ai/natural-language-search";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -24,6 +25,16 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <h1 className="font-serif text-3xl text-primary">Dashboard</h1>
+
+      {/* AI Search */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Search</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <NaturalLanguageSearch />
+        </CardContent>
+      </Card>
 
       {/* Stats */}
       <div className="grid gap-4 sm:grid-cols-3">

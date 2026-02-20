@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { TagPicker } from "@/components/tags/tag-picker";
+import { AiSummary } from "@/components/ai/ai-summary";
+import { AiSuggestions } from "@/components/ai/ai-suggestions";
+import { ConversationPrep } from "@/components/ai/conversation-prep";
 import { ContactActions } from "./contact-actions";
 import type { Tag } from "@/lib/types/models";
 
@@ -135,6 +138,11 @@ export default async function ContactDetailPage({
               )}
             </CardContent>
           </Card>
+
+          {/* AI Features */}
+          <AiSummary contactId={id} />
+          <ConversationPrep contactId={id} />
+          <AiSuggestions contactId={id} />
         </div>
 
         {/* Sidebar */}
