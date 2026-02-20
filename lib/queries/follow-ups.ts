@@ -1,8 +1,5 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/types/database";
+import type { DbClient } from "@/lib/types/database";
 import type { FollowUp } from "@/lib/types/models";
-
-type Client = SupabaseClient<Database>;
 
 // Joined type for follow-ups with contact name
 export type FollowUpWithContact = FollowUp & {
@@ -10,7 +7,7 @@ export type FollowUpWithContact = FollowUp & {
 };
 
 export async function getFollowUps(
-  supabase: Client,
+  supabase: DbClient,
   options?: { completed?: boolean }
 ) {
   let query = supabase
@@ -29,7 +26,7 @@ export async function getFollowUps(
   return (data ?? []) as unknown as FollowUpWithContact[];
 }
 
-export async function getDueFollowUps(supabase: Client) {
+export async function getDueFollowUps(supabase: DbClient) {
   const { data, error } = await supabase
     .from("follow_ups")
     .select("*, contacts(id, name)")
@@ -40,7 +37,7 @@ export async function getDueFollowUps(supabase: Client) {
   return (data ?? []) as unknown as FollowUpWithContact[];
 }
 
-export async function getFollowUpById(supabase: Client, id: string) {
+export async function getFollowUpById(supabase: DbClient, id: string) {
   const { data, error } = await supabase
     .from("follow_ups")
     .select("*, contacts(id, name)")

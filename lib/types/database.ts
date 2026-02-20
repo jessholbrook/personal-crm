@@ -179,7 +179,11 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
-    Enums: Record<string, never>;
-    CompositeTypes: Record<string, never>;
   };
 }
+
+// Shared client type for query/action functions.
+// Manual Database types don't satisfy @supabase/supabase-js v2.97.0 complex generics.
+// Regenerate this file via `supabase gen types` for full type safety.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type DbClient = any;

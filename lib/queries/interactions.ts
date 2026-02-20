@@ -1,8 +1,5 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/types/database";
+import type { DbClient } from "@/lib/types/database";
 import type { Interaction } from "@/lib/types/models";
-
-type Client = SupabaseClient<Database>;
 
 // Joined type for interactions with their contacts
 type InteractionWithContacts = Interaction & {
@@ -13,7 +10,7 @@ type InteractionWithContacts = Interaction & {
 };
 
 export async function getInteractions(
-  supabase: Client,
+  supabase: DbClient,
   options?: { type?: string; limit?: number }
 ) {
   let query = supabase
@@ -35,7 +32,7 @@ export async function getInteractions(
 }
 
 export async function getInteractionsByContact(
-  supabase: Client,
+  supabase: DbClient,
   contactId: string
 ) {
   // Get interaction IDs for this contact, then fetch full interactions
@@ -46,7 +43,7 @@ export async function getInteractionsByContact(
 
   if (junctionError) throw junctionError;
 
-  const ids = junctions?.map((j) => j.interaction_id) ?? [];
+  const ids = junctions?.map((j: { interaction_id: string }) => j.interaction_id) ?? [];
   if (ids.length === 0) return [];
 
   const { data, error } = await supabase
@@ -59,7 +56,7 @@ export async function getInteractionsByContact(
   return data ?? [];
 }
 
-export async function getInteractionById(supabase: Client, id: string) {
+export async function getInteractionById(supabase: DbClient, id: string) {
   const [interactionRes, contactsRes] = await Promise.all([
     supabase.from("interactions").select("*").eq("id", id).single(),
     supabase
@@ -71,7 +68,7 @@ export async function getInteractionById(supabase: Client, id: string) {
   if (interactionRes.error) throw interactionRes.error;
 
   // Get contact names
-  const contactIds = contactsRes.data?.map((ic) => ic.contact_id) ?? [];
+  const contactIds = contactsRes.data?.map((ic: { contact_id: string }) => ic.contact_id) ?? [];
   const { data: contacts } = contactIds.length > 0
     ? await supabase.from("contacts").select("id, name").in("id", contactIds)
     : { data: [] };

@@ -1,8 +1,5 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/types/database";
+import type { DbClient } from "@/lib/types/database";
 import type { Contact, FollowUp } from "@/lib/types/models";
-
-type Client = SupabaseClient<Database>;
 
 // Joined types for nested selects (until types are auto-generated)
 type ContactWithTags = Contact & {
@@ -10,7 +7,7 @@ type ContactWithTags = Contact & {
 };
 
 export async function getContacts(
-  supabase: Client,
+  supabase: DbClient,
   options?: { search?: string; tagId?: string }
 ) {
   let query = supabase
@@ -38,7 +35,7 @@ export async function getContacts(
   return contacts;
 }
 
-export async function getContactById(supabase: Client, id: string) {
+export async function getContactById(supabase: DbClient, id: string) {
   const { data, error } = await supabase
     .from("contacts")
     .select("*")
@@ -49,7 +46,7 @@ export async function getContactById(supabase: Client, id: string) {
   return data;
 }
 
-export async function getContactWithDetails(supabase: Client, id: string) {
+export async function getContactWithDetails(supabase: DbClient, id: string) {
   const [contactRes, interactionsRes, followUpsRes, tagsRes] = await Promise.all([
     supabase.from("contacts").select("*").eq("id", id).single(),
     supabase
@@ -62,7 +59,7 @@ export async function getContactWithDetails(supabase: Client, id: string) {
           .from("interaction_contacts")
           .select("interaction_id")
           .eq("contact_id", id)
-        ).data?.map((ic) => ic.interaction_id) ?? []
+        ).data?.map((ic: { interaction_id: string }) => ic.interaction_id) ?? []
       )
       .order("occurred_at", { ascending: false }),
     supabase
@@ -79,7 +76,7 @@ export async function getContactWithDetails(supabase: Client, id: string) {
           .from("contact_tags")
           .select("tag_id")
           .eq("contact_id", id)
-        ).data?.map((ct) => ct.tag_id) ?? []
+        ).data?.map((ct: { tag_id: string }) => ct.tag_id) ?? []
       ),
   ]);
 
@@ -93,7 +90,7 @@ export async function getContactWithDetails(supabase: Client, id: string) {
   };
 }
 
-export async function getContactCount(supabase: Client) {
+export async function getContactCount(supabase: DbClient) {
   const { count, error } = await supabase
     .from("contacts")
     .select("*", { count: "exact", head: true });

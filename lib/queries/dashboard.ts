@@ -1,11 +1,8 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/types/database";
+import type { DbClient } from "@/lib/types/database";
 import type { FollowUpWithContact } from "./follow-ups";
 import type { Contact } from "@/lib/types/models";
 
-type Client = SupabaseClient<Database>;
-
-export async function getOverdueFollowUps(supabase: Client) {
+export async function getOverdueFollowUps(supabase: DbClient) {
   const today = new Date().toISOString().split("T")[0]!;
 
   const { data, error } = await supabase
@@ -19,7 +16,7 @@ export async function getOverdueFollowUps(supabase: Client) {
   return (data ?? []) as unknown as FollowUpWithContact[];
 }
 
-export async function getRecentInteractions(supabase: Client, limit = 5) {
+export async function getRecentInteractions(supabase: DbClient, limit = 5) {
   const { data, error } = await supabase
     .from("interactions")
     .select("*, interaction_contacts(contact_id, contacts(id, name))")
@@ -30,7 +27,7 @@ export async function getRecentInteractions(supabase: Client, limit = 5) {
   return data ?? [];
 }
 
-export async function getNeedsAttention(supabase: Client): Promise<Contact[]> {
+export async function getNeedsAttention(supabase: DbClient): Promise<Contact[]> {
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -38,8 +35,7 @@ export async function getNeedsAttention(supabase: Client): Promise<Contact[]> {
   const { data: contacts, error: contactsError } = await supabase
     .from("contacts")
     .select("*")
-    .order("name")
-    .returns<Contact[]>();
+    .order("name");
 
   if (contactsError) throw contactsError;
   if (!contacts?.length) return [];
@@ -54,10 +50,8 @@ export async function getNeedsAttention(supabase: Client): Promise<Contact[]> {
   // Get the interaction dates to filter by recency
   const recentContactIds = new Set<string>();
   if (recentJunctions) {
-    const interactionIds = [...new Set(recentJunctions.map((j) => j.contact_id))];
-    // For simplicity, check each contact's latest interaction
-    for (const contactId of interactionIds) {
-      recentContactIds.add(contactId);
+    for (const j of recentJunctions as Array<{ contact_id: string }>) {
+      recentContactIds.add(j.contact_id);
     }
   }
 
