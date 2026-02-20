@@ -18,7 +18,6 @@
     "jsx": "react-jsx",
     "incremental": true,
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
     "plugins": [
       {
         "name": "next"
