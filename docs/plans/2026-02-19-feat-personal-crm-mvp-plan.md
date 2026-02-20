@@ -284,16 +284,16 @@ Set up the project, auth, and entire database schema in one phase.
 - `lib/types/enums.ts` — `as const` arrays for interaction types, priorities
 
 **Acceptance criteria:**
-- [ ] `npm run dev` starts without errors
-- [ ] `lib/env.ts` validates env vars at startup (missing vars = immediate crash with clear message)
-- [ ] Login/signup works with Supabase auth
-- [ ] Only the configured email can register (Supabase dashboard disables public signup)
-- [ ] Unauthenticated users redirected to /login
-- [ ] Session refresh works via middleware
-- [ ] All 6 tables created with correct constraints and NOT NULLs
-- [ ] RLS enabled on all tables with per-operation policies
-- [ ] `user_id` indexes on all tables for RLS performance
-- [ ] FK ownership validation triggers on junction table INSERTs
+- [x] `npm run dev` starts without errors
+- [x] `lib/env.ts` validates env vars at startup (missing vars = immediate crash with clear message)
+- [x] Login/signup works with Supabase auth
+- [x] Only the configured email can register (Supabase dashboard disables public signup)
+- [x] Unauthenticated users redirected to /login
+- [x] Session refresh works via middleware
+- [x] All 6 tables created with correct constraints and NOT NULLs
+- [x] RLS enabled on all tables with per-operation policies
+- [x] `user_id` indexes on all tables for RLS performance
+- [x] FK ownership validation triggers on junction table INSERTs
 - [ ] Migrations run cleanly on a fresh Supabase project
 - [ ] `supabase gen types` produces correct TypeScript output
 

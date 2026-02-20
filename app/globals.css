@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm Editorial Palette */
+  --color-primary-50: hsl(16, 55%, 96%);
+  --color-primary-100: hsl(16, 55%, 90%);
+  --color-primary-200: hsl(16, 55%, 80%);
+  --color-primary-300: hsl(16, 55%, 68%);
+  --color-primary-400: hsl(16, 55%, 58%);
+  --color-primary-500: hsl(16, 55%, 48%);
+  --color-primary-600: hsl(16, 55%, 40%);
+  --color-primary-700: hsl(16, 55%, 32%);
+  --color-primary-800: hsl(16, 55%, 24%);
+  --color-primary-900: hsl(16, 55%, 16%);
+
+  /* Amber AI Accent */
+  --color-ai-50: hsl(38, 90%, 96%);
+  --color-ai-100: hsl(38, 90%, 88%);
+  --color-ai-200: hsl(38, 90%, 76%);
+  --color-ai-300: hsl(38, 90%, 64%);
+  --color-ai-400: hsl(38, 90%, 52%);
+  --color-ai-500: hsl(38, 80%, 45%);
+
+  /* Warm paper background */
+  --color-paper: hsl(36, 33%, 97%);
+  --color-paper-dark: hsl(36, 20%, 94%);
+
+  /* Typography — system stack + one serif heading font */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+}
+
+body {
+  background-color: var(--color-paper);
+  font-family: var(--font-sans);
+}
