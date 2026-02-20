@@ -12,6 +12,11 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Personal CRM",
   description: "Manage relationships, interactions, and follow-ups",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "CRM",
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={instrumentSerif.variable}>
+      <head>
+        <meta name="theme-color" content="#C45D3E" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+      </head>
       <body>{children}</body>
     </html>
   );
